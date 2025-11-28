@@ -18,7 +18,7 @@ services:
       - "3306:3306"
 
   php-apache:
-    image: docker.io/library/php:8.2-apache
+    build: .                    # ← Geändert: verwendet jetzt das Dockerfile
     container_name: php-apache
     restart: unless-stopped
     depends_on:
