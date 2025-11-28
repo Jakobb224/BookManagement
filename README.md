@@ -27,6 +27,9 @@ MYSQL_PASSWORD: your_secure_password
 cd /path/to/BookManagement
 cd run
 ./docker.sh
+    -s rebuild, start
+    -r stopp, rebuild and start
+    -d shutdown
 ```
 
 **Using Podman:**
@@ -34,6 +37,9 @@ cd run
 cd /path/to/BookManagement
 cd run
 ./podman.sh
+    -s rebuild, start
+    -r stopp, rebuild and start
+    -d shutdown
 ```
 
 ## Access
