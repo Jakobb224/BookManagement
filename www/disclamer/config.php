@@ -1,8 +1,8 @@
 <?php
-$host = 'localhost';
-$dbname = 'Bücher';
-$username = 'webuser';
-$password = 'Borstel2012.';
+$host = 'mariadb';
+$dbname = 'myapp';
+$username = 'myuser';
+$password = 'mypassword';
 
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);

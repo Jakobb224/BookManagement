@@ -1,4 +1,7 @@
 <?php
+// Session MUSS ganz am Anfang stehen!
+session_start();
+
 // Datei mit dem gespeicherten Passwort
 $file = "../passwords.txt";
 
@@ -7,11 +10,6 @@ if (file_exists($file) && is_readable($file)) {
     // Passwort aus der Datei lesen und in eine Variable speichern
     $hash_from_file = trim(file_get_contents($file));
 }
-?>
-
-<?php
-session_start();
-
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Passwort aus dem Formular
@@ -27,47 +25,68 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Setze Session-Variable für erfolgreichen Login
         $_SESSION['logged_in'] = true;
         // Weiterleitung zur Seite mit der Medienverwaltung
-        header("Location: setting.php");
+        header("Location: settings.php");
         exit();
     }
 }
 ?>
-
 <!DOCTYPE html>
-<html lang="en">
+<html lang="de">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Disclamer</title>
-    <link rel="stylesheet" href="../style.css">
-    <script>
-        function back() {
-            location.replace("../index.php")
-        }
-    </script>
+    <title>CMD_Library v1.3.3.7</title>
+    <!-- Lade Stylesheet: Das 'Nerd-Modul' -->
+    <link rel="stylesheet" href="./style.css">
+
+    <!-- Lade Monospace-Fonts von Google: VT323 (Retro) und Share Tech Mono (Modern) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=VT323&display=swap" rel="stylesheet">
+
+    <!-- Lade Ionen-Icon-Bibliothek für System-Icons -->
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+
 </head>
 
-<body>
-    <nav>
-        <button onclick="back()" style="margin-right: 10px;">Zurrück</button>
-        <h1>VORSICHT</h1>
-    </nav>
-    <div style="margin-bottom: 75px; display: flex; justify-content: center;">
-        <div style="display: flex; flex-direction: column;">
-            <h4 style="color: red;">Der folgende Teil dieser Software ist nur speziel für den Admin gedacht.</h4>
-            <h4 style="color: green;">Wir bitten Sie deshalb sich mit Ihrem Masterpasswort anzumelden</h4>
-        </div>
-    </div>
+<body class="crt">
+    <header>
+        <nav>
+            <nav>
+                <!-- Titel mit animiertem Cursor -->
+                <h1><span aria-hidden="true">//</span>Admin Login<span aria-hidden="true" class="cursor">_</span></h1>
+            </nav>
+            <!-- Link zu den Einstellungen, als Icon getarnt -->
+            <a href="../index.php" class="settings-link" title="Systemeinstellungen">
+                <ion-icon name="return-down-back-outline"></ion-icon>
+            </a>
+        </nav>
+    </header>
     <div class="center">
         <div style="display: flex; flex-direction: column;">
             <div class="center">
-                <img style="margin-bottom: 10px;" src="./admin.png" width="200px" height="200px">
+                <table>
+                    <tr>
+                        <td>
+                            <ion-icon class="person" name="person-outline"></ion-icon>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p>ADMIN</p>
+                        </td>
+                    </tr>
+                </table>
+
             </div>
-            <form action="./index.php" method="post">
-                <input name="password" type="password" placeholder="Passwort">
-                <button type="submit">Weiter</button>
-            </form>
+            <div class="controls">
+                <form action="./index.php" method="post" class="search-form">
+                    <input type="password" name="password" id="search-input" placeholder="> Masterkennwort eingeben...">
+                    <button type="submit" class="btn">Weiter</button>
+                </form>
+            </div>
         </div>
     </div>
 </body>

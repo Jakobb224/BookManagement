@@ -1,163 +1,322 @@
-body {
-    margin: 0px;
-    font-family: "Roboto";
-    background-color: rgba(219, 219, 219, 0.356);
+/*
+ * STYLESHEET: NERD_MODULE_v2.css
+ * THEME: H4x0r Green Terminal (CRT-Modus)
+ * AUTOR: GEMINI_CORE
+ */
+
+/* Globale Resets und Box-Sizing */
+*, *::before, *::after {
+    box-sizing: border-box;
 }
-nav {
-    background-color: rgba(255, 255, 255, 0.692);
-    margin-top: 0px;
-    padding: 0px;
-    height: 70px;
+
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    min-height: 100vh;
+    
+    /* Terminal-Farbschema */
+    background-color: #0a0f0a; /* Sehr dunkles Grün/Schwarz */
+    color: #00ff41;             /* Helles Phosphor-Grün */
+    
+    /* Monospace-Font für das gesamte System */
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 16px;
+    
+    /* Text-Glüheffekt */
+    text-shadow: 
+        0 0 3px rgba(0, 255, 65, 0.7),
+        0 0 5px rgba(0, 255, 65, 0.5);
+    
+    /* Verhindert horizontales Scrollen */
+    overflow-x: hidden;
+}
+
+/* * CRT-Monitor-Effekt:
+ * Ein Overlay mit Scanlines und Flimmern.
+ */
+body.crt::before {
+    content: " ";
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    
+    /* Horizontale Scanlines */
+    background: linear-gradient(
+        rgba(18, 16, 16, 0) 50%,
+        rgba(0, 0, 0, 0.25) 50%
+    );
+    background-size: 100% 3px; /* 3px hohe Linien */
+    
+    z-index: 1000; /* Immer im Vordergrund */
+    pointer-events: none; /* Klicks "durchlassen" */
+    
+    /* Flimmer-Animation */
+    animation: flicker 0.1s infinite;
+}
+
+/* Keyframes für das Flimmern */
+@keyframes flicker {
+    0% { opacity: 0.9; }
+    30% { opacity: 0.85; }
+    60% { opacity: 0.95; }
+    100% { opacity: 0.88; }
+}
+
+/* Header und Navigation */
+header {
+    position: relative;
+    padding: 10px 20px;
+    border-bottom: 2px solid #008f11; /* Dunkelgrüne Grenze */
+    box-shadow: 0 0 15px rgba(0, 255, 65, 0.2);
+}
+
+nav h1 {
+    font-family: 'VT323', monospace; /* Retro-Pixel-Font */
+    font-size: 2.8rem;
+    text-align: center;
+    color: #39ff14; /* Helleres Grün */
+    margin: 0;
+    padding: 0;
+    text-transform: uppercase;
+}
+
+/* Animierter Terminal-Cursor */
+nav h1 .cursor {
+    animation: blink 1s steps(1) infinite;
+    display: inline-block;
+    color: #fff;
+}
+
+@keyframes blink {
+    50% { opacity: 0; }
+}
+
+/* Link für Systemeinstellungen (Icon) */
+.settings-link {
+    position: absolute;
+    top: 50%;
+    right: 25px;
+    transform: translateY(-50%);
+    font-size: 2.2rem;
+    color: #00ff41;
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+.settings-link:hover,
+.settings-link:focus {
+    color: #ffffff;
+    text-shadow: 0 0 10px #fff, 0 0 20px #00ff41;
+    transform: translateY(-50%) rotate(15deg);
+}
+
+/* Kontrollsektion (Suche, Buttons) */
+.controls {
     display: flex;
+    flex-wrap: wrap; /* Besser für mobile Ansicht */
     justify-content: center;
     align-items: center;
-    margin-bottom: 30px;
-    color: rgb(41, 41, 41);
-    border-bottom: #bebebe solid 1px;
+    gap: 15px;
+    margin: 30px 20px;
 }
-#Db-nothing {
+
+.search-form {
     display: flex;
-    justify-content: center;
-    margin-top: 20px;
-    color: rgb(231, 156, 57);
-    font-family: "Pacifico";
+    gap: 10px;
 }
-table {
-    width: calc(100% - 10px);
-    color: rgb(0, 0, 0);
-    background-color: white;
-    padding: 5px;
-    margin-left: 5px;
-    margin-right: 5px;
-    margin-top: 50px;
-    border-radius: 20px;
-    border-bottom: #c4c4c4 solid 1px;
-    border-left: 1px solid rgb(230, 212, 199);
-    border-right: 1px solid rgb(230, 212, 199);
-    box-shadow: 5px 5px 5px rgba(204, 204, 204, 0.719);
-    margin-bottom: 40px;
+
+/* Text-Input für die Suche */
+input[type="password"] {
+    background-color: #051805; /* Sehr dunkles Grün */
+    border: 2px solid #00ff41;
+    color: #00ff41;
+    padding: 10px 15px;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 1rem;
+    width: 250px;
+    caret-color: #fff; /* Cursorfarbe */
+    transition: all 0.3s ease;
 }
-.th {
-    color: rgb(163, 112, 112);
-    border-bottom: 1px rgb(99, 99, 99) solid;
-    font-size: 19px;
+
+input[type="password"]:focus {
+    outline: none;
+    background-color: #0a2a0a;
+    box-shadow: 0 0 15px rgba(0, 255, 65, 0.5);
+}
+
+input[type="text"]::placeholder {
+    color: #008f11;
+    opacity: 0.7;
+}
+
+/* * Button-Basis-Klasse (.btn)
+ * Gilt für <button> und <a> Tags 
+ */
+.btn {
+    background-color: transparent;
+    border: 2px solid #00ff41;
+    color: #00ff41;
+    padding: 10px 20px;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 1rem;
+    text-transform: uppercase;
+    text-decoration: none;
+    text-shadow: none; /* Wichtig: Button-Text soll nicht glühen */
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+}
+
+.btn:hover,
+.btn:focus {
+    background-color: #00ff41;
+    color: #0a0f0a; /* Invertierte Farben */
+    box-shadow: 0 0 15px rgba(0, 255, 65, 0.7), 0 0 25px rgba(0, 255, 65, 0.5);
+    outline: none;
+}
+
+/* Warnmeldungen (z.B. DB leer) */
+#Db-nothing.warning {
+    text-align: center;
+    font-size: 1.3rem;
+    font-family: 'VT323', monospace;
+    color: #ff4141; /* Rot für Warnungen */
+    text-shadow: 0 0 10px #ff4141;
+    text-transform: uppercase;
+    padding: 20px;
+    border: 2px dotted #ff4141;
+    margin: 30px 20px;
+    background: rgba(255, 65, 65, 0.05);
+}
+
+/* Daten-Tabelle */
+.matrix-table {
+    width: calc(100% - 40px); /* Volle Breite mit Rand */
+    margin: 30px 20px;
+    border-collapse: collapse; /* Keine doppelten Ränder */
+    border: 2px solid #00ff41;
+    box-shadow: 0 0 25px rgba(0, 255, 65, 0.3);
+}
+
+/* Tabellen-Header */
+.matrix-table .th {
+    font-family: 'VT323', monospace;
+    font-size: 1.6rem;
+    color: #ffb000; /* Amber/Gelb für Header */
+    text-shadow: 0 0 5px #ffb000;
+    padding: 15px;
+    border-bottom: 2px solid #00ff41;
+    letter-spacing: 2px;
+    text-align: left;
+}
+
+/* Tabellen-Zellen (Body) */
+.matrix-table tbody td {
+    padding: 12px 15px;
+    border-left: 1px dotted #008f11; /* Vertikale Trennlinien */
+    text-align: left;
+    transition: all 0.2s ease;
+}
+
+.matrix-table tbody td:first-child {
+    border-left: none; /* Erste Spalte keine linke Linie */
+}
+
+/* Hover-Effekt für Tabellen-Zeilen */
+.matrix-table tbody tr:hover td {
+    background-color: #092f09; /* Dunkelgrüner Zeilen-Highlight */
+    color: #ffffff;
+    text-shadow: 0 0 5px #fff;
+    cursor: cell;
+}
+
+/* * Responsive Design für schmale Bildschirme (< 600px) 
+ * "Stacking Table" - Die Tabelle wird zu einer Liste.
+ */
+@media screen and (max-width: 600px) {
+    .controls {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .search-form {
+        flex-direction: column;
+    }
+
+    input[type="password"] {
+        width: 100%;
+    }
+
+    .btn {
+        width: 100%;
+        text-align: center;
+    }
+
+    /* Verstecke den Tabellen-Header */
+    .matrix-table thead {
+        display: none;
+    }
+
+    /* Zeige Tabellen-Zeilen als Blöcke an */
+    .matrix-table tr {
+        display: block;
+        margin-bottom: 15px;
+        border: 2px solid #008f11;
+    }
+
+    .matrix-table td {
+        display: block; /* Zellen untereinander anordnen */
+        text-align: right; /* Daten rechts... */
+        padding-left: 50%; /* Platz für den Titel schaffen */
+        position: relative;
+        border: none;
+        border-bottom: 1px dotted #008f11;
+    }
+
+    .matrix-table td:last-child {
+        border-bottom: none;
+    }
+
+    /* ...und den Titel (aus data-label) links davor einblenden */
+    .matrix-table td::before {
+        content: attr(data-label); /* Holt den Titel aus dem 'data-label' Attribut */
+        position: absolute;
+        left: 10px;
+        width: 45%;
+        padding-right: 10px;
+        white-space: nowrap;
+        text-align: left;
+        font-weight: bold;
+        color: #ffb000; /* Header-Farbe */
+        text-shadow: none;
+    }
+}
+
+/* Utility-Klasse für Screenreader (unsichtbar, aber lesbar) */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
 }
 .center {
+    text-align: center;
     display: flex;
     justify-content: center;
-    margin-bottom: 20px;
 }
-
-input {
-    height: 20px;
-    padding: 5px;
-    border-radius: 3px;
-    border: 0px;
-    background-color: rgba(224, 224, 224, 0.842);
-    width: 220px;
-    margin-bottom: 10px;
+.person {
+    margin-top: 40px;
+    font-size: 250px;
 }
-#add {
-    display: flex;
-    flex-direction: column;
-}
-td {
-    padding-bottom: 5px;
-}
-.left {
-    position: fixed;
-    right: 10px;
-    top: 15px;
-    background-color: rgba(92, 92, 92, 0);
-    color: rgb(255, 255, 255);
-    font-size: 20px;
-}
-.backup {
-    margin-left: 10px;
-    color: gray;
-    margin-top: 50px;
-}
-hr {
-    border: 1px solid rgb(66, 66, 66);
-}
-.content {
-    position: relative;
-    border: 2px solid #8a8d6a;
-    border-radius: 10px;
-    padding: 15px;
-    font-family: Arial, sans-serif;
-    color: aliceblue;
-    margin: 15px;
-    margin-right: 100px;
-    margin-top: 50px;
-}
-  
-.content::after {
-    content: "";
-    position: absolute;
-    bottom: -10px; /* Position des Dreiecks */
-    left: 20px; /* Position an der horizontalen Achse */
-    width: 0;
-    height: 0;
-    border-style: solid;
-    border-width: 10px 10px 0 10px; /* Dreiecksgröße */
-    border-color: #8a8d6a transparent transparent transparent; /* Farbe des Dreiecks */
-}
-.tux {
-    margin-left: 20px;
-    margin-top: 10px;
-    margin-bottom: 20px;
-}
-.next {
-    width: 500px;
-    margin: 10px;
-    position: absolute;
-    bottom: 10px;
-}
-
-/* CSS */
-button{
-  align-self: center;
-  background-color: #fff;
-  background-image: none;
-  background-position: 0 90%;
-  background-repeat: repeat no-repeat;
-  background-size: 4px 3px;
-  border-radius: 15px 225px 255px 15px 15px 255px 225px 15px;
-  border-style: solid;
-  border-width: 2px;
-  box-shadow: rgba(0, 0, 0, .2) 15px 28px 25px -18px;
-  box-sizing: border-box;
-  color: #41403e;
-  cursor: pointer;
-  display: inline-block;
-  font-family: Neucha, sans-serif;
-  font-size: 1rem;
-  line-height: 23px;
-  outline: none;
-  padding: .75rem;
-  text-decoration: none;
-  transition: all 235ms ease-in-out;
-  border-bottom-left-radius: 15px 255px;
-  border-bottom-right-radius: 225px 15px;
-  border-top-left-radius: 255px 15px;
-  border-top-right-radius: 15px 225px;
-  user-select: none;
-  -webkit-user-select: none;
-  touch-action: manipulation;
-}
-
-button:hover {
-  box-shadow: rgba(0, 0, 0, .3) 2px 8px 8px -5px;
-  transform: translate3d(0, 2px, 0);
-}
-
-button:focus {
-  box-shadow: rgba(0, 0, 0, .3) 2px 8px 4px -6px;
-}
-form {
-    background-color: white;
-    padding: 20px;
-    border-radius: 20px;
-    border-bottom: #c4c4c4 solid 1px;
+table {
+    margin-bottom: 15px;
 }
